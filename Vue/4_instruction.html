@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>4.v-if,v-show,v-for指令</title>
+	<script type="text/javascript" src="./vue.js"></script>
+</head>
+<body>
+	<div id="root">
+		<div v-if="show">v-if</div>
+		<div v-show="show">v-show</div>
+		<ul>
+			<li v-for="(item, index) of list" :key="index">{{item}}</li>
+		</ul>
+		<button @click="handleClick">toggle</button>
+	</div>
+
+	<script type="text/javascript">
+		new Vue({
+			el: "#root",
+			data: {
+				show: true,
+				list: [1,2,3]
+			},
+			methods: {
+				handleClick: function(){
+					this.show = !this.show;
+				}
+			}
+		})
+	</script>
+</body>
+</html>

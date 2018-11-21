@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>7.todoList删除元素</title>
+	<script type="text/javascript" src="./vue.js"></script>
+</head>
+<body>
+	<div id="root">
+		<div>
+			<input v-model="inputValue">
+			<button @click="handleSubmit">提交</button>
+		</div>
+		<ul>
+			<!-- 父组件监听子组件发布的delete事件 -->
+			<todo-item 
+			v-for="(item, index) of list" 
+			:key="index"
+			:content="item"
+			:index="index"	
+			@delete="handleDelete"
+			>
+			</todo-item>
+		</ul>
+	</div>
+
+	<script type="text/javascript">
+
+		//定义全局组件
+		//vue里面每个组件都是vue的一个实例
+		Vue.component('todo-item',{
+			props: ['content','index'],
+			template: "<li @click='handleClick'>{{content}}</li>",
+			methods: {
+				handleClick: function(){
+					//子组件和父组件通信通过发布订阅模式
+					this.$emit('delete',this.index);
+				}
+			}
+		})
+
+		//定义局部组件
+		// var todoItem = {
+		// 	template: "<li>item</li>"
+		// }
+
+		new Vue({
+			el: "#root",
+			//定义局部组件需要注册
+			// components: {
+			// 	'todo-item': todoItem
+			// },
+			data: {
+				inputValue: "",
+				list: []
+			},
+			methods: {
+				handleSubmit: function(){
+					this.list.push(this.inputValue);
+					this.inputValue = "";
+				},
+				handleDelete: function(index){
+					//从数组的index位置处开始向后移除1个元素
+					this.list.splice(index,1);
+				}
+			}
+		})
+	</script>
+</body>
+</html>
